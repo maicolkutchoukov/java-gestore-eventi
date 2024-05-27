@@ -9,7 +9,7 @@ public class Event {
     private int totalPlaces;
     private int reservedSeats;
 
-    public Event(String title, LocalDate date, int totalPlaces) throws IllegalArgumentException{
+    public Event(String title, LocalDate date, int totalPlaces) throws IllegalArgumentException, IllegalStateException{
         this.title = title;
         this.date = date;
         this.totalPlaces = totalPlaces;
@@ -44,20 +44,20 @@ public class Event {
         return reservedSeats;
     }
 
-    private void dateValidation() {
+    private void dateValidation() throws IllegalArgumentException{
         LocalDate today = LocalDate.now();
         if (date.isBefore(today)) {
             throw new IllegalArgumentException("La data non può essere nel passato.");
         }
     }
 
-    private void checkSeats(){
+    private void checkSeats() throws IllegalArgumentException{
         if (totalPlaces < 0){
             throw new IllegalArgumentException("I posti non possono essere negativi.");
         }
     }
 
-    public void bookSeats(int numberOfSeats) {
+    public void bookSeats(int numberOfSeats) throws IllegalArgumentException, IllegalStateException{
         if (numberOfSeats <= 0) {
             throw new IllegalArgumentException("Il numero di posti da prenotare deve essere almeno 1.");
         }
@@ -70,7 +70,7 @@ public class Event {
         reservedSeats += numberOfSeats;
     }
 
-    public void cancelSeats(int numberOfSeats){
+    public void cancelSeats(int numberOfSeats) throws IllegalStateException, IllegalArgumentException{
         if (numberOfSeats < 0){
             throw new IllegalArgumentException("Il numero di posti da cancellare deve essere almeno 1.");
         }
@@ -80,7 +80,6 @@ public class Event {
         if(numberOfSeats > reservedSeats){
             throw new IllegalArgumentException("Non ci sono abbastanza posti prenotati");
         }
-        totalPlaces += numberOfSeats;
         reservedSeats -= numberOfSeats;
     }
 
