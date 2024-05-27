@@ -10,12 +10,12 @@ public class Event {
     private int reservedSeats;
 
     public Event(String title, LocalDate date, int totalPlaces) throws IllegalArgumentException{
-        dateValidation();
-        checkSeats();
         this.title = title;
         this.date = date;
         this.totalPlaces = totalPlaces;
         reservedSeats = 0;
+        dateValidation();
+        checkSeats();
     }
 
     public String getTitle() {
@@ -32,6 +32,7 @@ public class Event {
 
     public void setDate(LocalDate date) {
         this.date = date;
+        dateValidation();
     }
 
     public int getTotalPlaces() {
@@ -79,13 +80,18 @@ public class Event {
         if(numberOfSeats > reservedSeats){
             throw new IllegalArgumentException("Non ci sono abbastanza posti prenotati");
         }
-
+        totalPlaces += numberOfSeats;
         reservedSeats -= numberOfSeats;
     }
 
+    public int avaiableSeats(){
+        int avaiable = totalPlaces - reservedSeats;
+        return avaiable;
+
+    }
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return date.format(formatter) + " - " + title;
     }
 }
