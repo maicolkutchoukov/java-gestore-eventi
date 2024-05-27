@@ -1,12 +1,16 @@
 package org.events;
 
+import java.math.BigDecimal;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Concert concert1 = new Concert("Salmo", LocalDate.parse("2029-08-29"), 5000, LocalTime.parse("22:30"), new BigDecimal("29.50"));
+        System.out.println(concert1);
         Scanner scanner = new Scanner(System.in);
         String title = null;
         LocalDate date = null;
@@ -59,6 +63,7 @@ public class Main {
             System.out.println("Posti prenotati: " + event1.getReservedSeats() + " posti disponibili: " + event1.avaiableSeats());
             System.out.println("Bye bye");
         }
+
 
 
         scanner.close();
