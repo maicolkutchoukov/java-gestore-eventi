@@ -1,6 +1,7 @@
 package org.events;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Event {
     private String title;
@@ -8,7 +9,7 @@ public class Event {
     private int totalPlaces;
     private int reservedSeats;
 
-    public Event(String title, LocalDate date, int totalPlaces) {
+    public Event(String title, LocalDate date, int totalPlaces) throws IllegalArgumentException{
         dateValidation();
         checkSeats();
         this.title = title;
@@ -53,5 +54,38 @@ public class Event {
         if (totalPlaces < 0){
             throw new IllegalArgumentException("I posti non possono essere negativi.");
         }
+    }
+
+    public void bookSeats(int numberOfSeats) {
+        if (numberOfSeats <= 0) {
+            throw new IllegalArgumentException("Il numero di posti da prenotare deve essere almeno 1.");
+        }
+        if (date.isBefore(LocalDate.now())) {
+            throw new IllegalStateException("L'evento è già passato.");
+        }
+        if (reservedSeats + numberOfSeats > totalPlaces) {
+            throw new IllegalStateException("Non ci sono abbastanza posti disponibili.");
+        }
+        reservedSeats += numberOfSeats;
+    }
+
+    public void cancelSeats(int numberOfSeats){
+        if (numberOfSeats < 0){
+            throw new IllegalArgumentException("Il numero di posti da cancellare deve essere almeno 1.");
+        }
+        if (date.isBefore(LocalDate.now())){
+            throw new IllegalStateException("L'evento è già passato.");
+        }
+        if(numberOfSeats > reservedSeats){
+            throw new IllegalArgumentException("Non ci sono abbastanza posti prenotati");
+        }
+
+        reservedSeats -= numberOfSeats;
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy");
+        return date.format(formatter) + " - " + title;
     }
 }
